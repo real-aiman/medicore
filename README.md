@@ -1,102 +1,173 @@
-# MediCore \u2014 Hospital Management Dashboard
+# MediCore — Hospital Management Dashboard
 
-A component-based **React + TypeScript + Vite** hospital administration UI.
+<p align="center">
+  <strong>A polished, responsive hospital administration dashboard built with React, TypeScript and Vite.</strong>
+</p>
 
-## Run it
+<p align="center">
+  <a href="https://real-aiman.github.io/medicore/">Live Demo</a> ·
+  <a href="https://github.com/real-aiman/medicore">Repository</a>
+</p>
+
+## ✨ Overview
+
+MediCore is a frontend-focused hospital management dashboard designed to demonstrate production-style UI architecture, typed domain models, persistent state, responsive layouts, data visualization, client-side routing and document export.
+
+The demo uses realistic seed data and persists changes in the browser with Zustand, so it can be explored without a backend or external database.
+
+> **Demo note:** MediCore is a portfolio/demo application. It is not intended for real patient data, clinical decision-making, or production healthcare use.
+
+## 🚀 Highlights
+
+- 📊 Executive dashboard with operational KPIs and charts
+- 👥 Patient management with searchable profiles and patient summaries
+- 👨‍⚕️ Doctor and department management
+- 📅 Appointment scheduling workflows
+- 💊 Prescription and pharmacy management
+- 🧪 Laboratory test tracking
+- 🛏️ Bed and occupancy management
+- 💳 Billing and invoice workflows
+- 📄 A4 PDF invoice and patient-summary exports
+- 🔔 Toast notifications and confirmation dialogs
+- 🌙 Theme support through centralized design tokens
+- 📱 Responsive sidebar, tables, forms and mobile navigation
+- 🧭 URL-based navigation with React Router
+- 💾 Persistent demo state with Zustand + localStorage
+- ✨ Smooth, restrained page and interaction animations with Framer Motion
+
+## 🧰 Tech Stack
+
+| Layer | Technology |
+| --- | --- |
+| UI | React 18 + TypeScript |
+| Build | Vite 5 |
+| Styling | Tailwind CSS 3 + CSS design tokens |
+| Routing | React Router 6 |
+| State | Zustand 4 + persist middleware |
+| Animation | Framer Motion |
+| Charts | Recharts |
+| Icons | Lucide React |
+| Documents | jsPDF + AutoTable |
+| Utilities | clsx |
+
+## 🗂️ Project Structure
+
+```text
+src/
+├── components/
+│   ├── Sidebar.tsx
+│   ├── Topbar.tsx
+│   ├── QuickAddMenu.tsx
+│   └── ui.tsx
+├── data/
+│   └── seed.ts
+├── pages/
+│   ├── patients/
+│   ├── appointments/
+│   ├── prescriptions/
+│   ├── laboratory/
+│   ├── billing/
+│   ├── Dashboard.tsx
+│   ├── Doctors.tsx
+│   ├── DoctorProfile.tsx
+│   ├── Departments.tsx
+│   ├── Beds.tsx
+│   ├── Pharmacy.tsx
+│   ├── Reports.tsx
+│   └── Settings.tsx
+├── store/
+│   ├── hospitalStore.tsx
+│   └── uiStore.tsx
+├── styles/
+│   └── tokens.css
+├── types/
+│   └── index.ts
+├── utils/
+│   ├── helpers.ts
+│   └── pdf.ts
+├── App.tsx
+└── main.tsx
+```
+
+## 🛠️ Run Locally
+
+### Requirements
+
+- Node.js 18+
+- npm 9+
+
+### Installation
 
 ```bash
+git clone https://github.com/real-aiman/medicore.git
+cd medicore
 npm install
-npm run dev       # start the dev server
-npm run build     # production build (verified clean)
-npm run typecheck # tsc --noEmit (verified clean, 0 errors)
 ```
 
-Data persists to `localStorage` (key `medicore:v2`, via Zustand's
-`persist` middleware) and reseeds with realistic sample data the first
-time you open it.
+### Development
 
-## Stack
-
-- **React 18 + TypeScript** \u2014 every source file is `.tsx`/`.ts`, with
-  real data-model interfaces in `src/types/index.ts` (Patient, Doctor,
-  Appointment, Prescription, Invoice, LabTest, Bed, Department,
-  Notification, HospitalSettings). `tsconfig.json` runs with
-  `strict: false` / `noImplicitAny: false` so the migration didn't
-  require annotating every internal callback \u2014 the public
-  component/store boundaries are properly typed, which is where type
-  safety actually pays off. `npm run typecheck` passes with 0 errors.
-- **Zustand** (`src/store/hospitalStore.tsx`) with the `persist`
-  middleware for localStorage-backed state. A thin `useStore()`
-  compatibility hook keeps the `{ state, dispatch({ type, payload }) }`
-  call shape used throughout the page components.
-- **react-router-dom** \u2014 real URLs (`/patients`, `/patients/:id`,
-  `/doctors/:id`, etc.) instead of internal page-state. Note: since
-  routing is client-side, a static host needs an SPA fallback rule
-  (serve `index.html` for unmatched paths) \u2014 Vite's dev server and
-  `vite preview` already do this for you.
-- **Framer Motion** \u2014 used in `Modal`, `ConfirmDialog`, `StatCard`,
-  buttons (tap feedback), and page transitions in `App.tsx`.
-- **jsPDF + jspdf-autotable** (`src/utils/pdf.ts`) \u2014 real, structured
-  PDF generation (not a screenshot): `downloadInvoicePdf()` builds an
-  A4 invoice with header/line-items/totals, and
-  `downloadPatientSummaryPdf()` builds a one-page patient record
-  summary. Both are wired to real buttons (Billing \u2192 Download PDF;
-  Patient Profile \u2192 Export PDF).
-- **Recharts** for all charts, **lucide-react** for icons.
-- **Tailwind CSS 3** for all styling. Components use real utility
-  classes (`className="flex items-center gap-2 rounded-lg ..."`),
-  not inline `style` objects \u2014 the only remaining inline `style` props
-  are for genuinely dynamic/runtime values Tailwind can't express as a
-  static class (a data-driven hex color, a computed animation delay,
-  an avatar's generated hue). `tailwind.config.js` maps the design
-  tokens as theme colors (`bg-navy`, `text-blue`, `bg-slate-100`,
-  `bg-green-bg`, etc.) by pointing them at the CSS custom properties
-  in `src/styles/tokens.css` \u2014 that's also how dark mode keeps working
-  with plain utility classes: toggling `.dark` on the root flips the
-  underlying CSS variables, so `bg-surface` etc. repaint automatically
-  without needing `dark:` variants everywhere. Recharts' SVG
-  fill/stroke props still take the CSS variables directly (`var(--blue)`)
-  since chart libraries need literal color strings, not classes.
-
-## Structure
-
-```
-src/
-  types/index.ts     data-model interfaces (Patient, Doctor, Appointment, ...)
-  components/
-    ui.tsx            typed UI primitives: Badge, Btn, Card, Modal, ConfirmDialog,
-                       ResponsiveTable<T>, StatCard, Pagination, etc.
-    Sidebar.tsx        collapsible desktop sidebar + mobile drawer
-    Topbar.tsx         global search, notifications, quick add, user menu
-    QuickAddMenu.tsx
-  pages/
-    Dashboard.tsx
-    patients/          Patients.tsx, PatientProfile.tsx, PatientForm.tsx
-    appointments/       Appointments.tsx, AppointmentForm.tsx
-    prescriptions/       Prescriptions.tsx, PrescriptionForm.tsx
-    laboratory/          Laboratory.tsx, LabForm.tsx
-    billing/              Billing.tsx, InvoiceForm.tsx, InvoiceDocument.tsx
-    Doctors.tsx, DoctorProfile.tsx
-    Departments.tsx, Beds.tsx, Pharmacy.tsx, Reports.tsx, Settings.tsx
-  store/
-    hospitalStore.tsx   Zustand store + persist middleware
-    uiStore.tsx          toast notifications
-  data/seed.ts          typed sample-data generators
-  utils/
-    helpers.ts           date/money formatting, id generation, random helpers
-    pdf.ts                jsPDF invoice + patient-summary generators
-  styles/tokens.css       design tokens (CSS variables) + shared animations
-  App.tsx                 router + shell (sidebar/topbar layout, page transitions)
-  main.tsx                Vite/React entry point
-tailwind.config.js         theme colors mapped to CSS variables, custom spacing/animation keyframes
-postcss.config.js          Tailwind + autoprefixer
+```bash
+npm run dev
 ```
 
-## What's verified
+Then open the local URL printed by Vite.
 
-- `npm run typecheck` \u2014 0 errors
-- `npm run build` \u2014 clean production build
-- `vite preview` \u2014 serves and responds 200 on both `index.html` and the
-  built JS bundle
-- Every relative import in `src/` resolves to an existing file (checked
-  programmatically, not just by eye)
+### Production build
+
+```bash
+npm run typecheck
+npm run build
+npm run preview
+```
+
+## 🧪 Quality Checks
+
+The repository includes automated GitHub Actions checks for the two most important baseline gates:
+
+```bash
+npm run typecheck
+npm run build
+```
+
+These checks run on pushes and pull requests so broken TypeScript or production builds are caught before merging.
+
+## 💾 Data & Privacy
+
+MediCore intentionally runs without a backend. Demo changes are stored locally in the browser under the `medicore:v2` Zustand persistence key and can be reset by clearing the site's local storage.
+
+**Do not enter real patient information into this demo.** No claim of HIPAA compliance, clinical safety, or production security is made by this project.
+
+## 🌐 Deployment
+
+The project is compatible with static hosting because it is a Vite SPA. For GitHub Pages, client-side routes should be configured with an SPA fallback strategy if deep links are expected to be opened directly.
+
+## 🎯 Portfolio Focus
+
+This project demonstrates:
+
+- Component-driven React architecture
+- TypeScript domain modeling
+- State management and persistence
+- Responsive dashboard UX
+- Reusable UI primitives
+- Data visualization
+- PDF document generation
+- Client-side routing
+- Accessibility-minded controls and feedback
+- Production build verification and CI
+
+## 🤝 Contributing
+
+Contributions, bug reports and UI suggestions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+
+## 🔐 Security
+
+Please do not report security-sensitive information publicly. See [SECURITY.md](SECURITY.md) for the reporting policy.
+
+## 📄 License
+
+MediCore is released under the MIT License. See [LICENSE](LICENSE) for details.
+
+---
+
+<p align="center">Built with React, TypeScript and a healthcare-first UI mindset.</p>
