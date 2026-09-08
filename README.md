@@ -1,0 +1,2 @@
+# medicore
+Hospital dashboard
