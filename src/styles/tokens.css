@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design tokens as CSS custom properties. Tailwind's theme.colors
+   reference these (see tailwind.config.js), which is what makes
+   `bg-navy`, `text-text-soft`, `bg-green-bg`, etc. work, and is also
+   what lets dark mode flip the whole palette by toggling one class
+   on the root element instead of duplicating every utility with a
+   dark: variant. Recharts also reads these directly as color strings
+   since SVG fill/stroke props need literal CSS values, not classes. */
+:root {
+  --navy: #0F2A43;
+  --navy-700: #153552;
+  --blue: #2563A8;
+  --blue-light: #EAF2FA;
+  --slate: #5B6B7C;
+  --slate-100: #F4F6F8;
+  --slate-200: #E7EBEF;
+  --slate-300: #D6DDE4;
+  --teal: #0E8F82;
+  --green-bg: #EAF7EE; --green: #2E9E52;
+  --amber-bg: #FDF3E1; --amber: #B4790C;
+  --red-bg: #FBEAEA; --red: #C13B3B;
+  --surface: #FFFFFF;
+  --bg: #F6F8FA;
+  --border: #E4E9EE;
+  --text: #16232F;
+  --text-soft: #5B6B7C;
+  --radius: 8px;
+  --shadow-sm: 0 1px 2px rgba(15, 42, 67, 0.06);
+  --shadow-md: 0 4px 14px rgba(15, 42, 67, 0.08);
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+}
+
+.dark {
+  --surface: #132436;
+  --bg: #0C1B2A;
+  --border: #213A50;
+  --text: #E7EEF4;
+  --text-soft: #9AB0C2;
+  --slate-100: #16293C;
+  --slate-200: #1C3247;
+  --slate-300: #25415A;
+  --blue-light: #15304A;
+  --green-bg: #123326; --green: #4FBE79;
+  --amber-bg: #332708; --amber: #E0A73B;
+  --red-bg: #391818; --red: #E3696E;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+html, body, #root { height: 100%; }
+body { margin: 0; }
+
+.mc-root ::selection { background: var(--blue); color: #fff; }
+
+.mc-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+.mc-scroll::-webkit-scrollbar-thumb { background: var(--slate-300); border-radius: 8px; }
+
+.mc-focus:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mc-root * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+@media (max-width: 860px) {
+  #mc-menu-btn { display: flex !important; }
+  .mc-desktop-sidebar { display: none !important; }
+}
+@media (max-width: 980px) {
+  .mc-grid-2col { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 640px) {
+  #mc-search-wrap { display: none; }
+  #mc-quickadd-label { display: none; }
+}
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff; }
+}
